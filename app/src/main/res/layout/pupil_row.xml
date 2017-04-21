@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
@@ -9,54 +10,41 @@
     android:paddingBottom="10dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="10dp"><![CDATA[
-    >
+    android:paddingTop="10dp">
 
-    ]]>
-
-    <TextView
-        android:id="@+id/txt_view_lbl_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name"
-        android:textAlignment="viewStart"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="18sp" />
-
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/img_profile_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/image"
+        app:civ_border_color="#EEEEEE"
+        app:civ_border_width="4dp"
+        app:civ_shadow="true"
+        app:civ_shadow_color="#8BC34A"
+        app:civ_shadow_radius="10" />
     <TextView
         android:id="@+id/txt_view_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/txt_view_lbl_name"
-        android:layout_marginStart="20dp"
-        android:layout_toEndOf="@+id/txt_view_lbl_name"
         android:text="TextView"
         android:textAlignment="gravity"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/txt_view_lbl_country"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/txt_view_lbl_name"
-        android:layout_marginTop="19dp"
-        android:text="Country"
-        android:textAlignment="viewStart"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="18sp" />
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/txt_view_country"
+        android:layout_marginEnd="46dp" />
 
     <TextView
         android:id="@+id/txt_view_country"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/txt_view_lbl_country"
-        android:layout_alignEnd="@+id/txt_view_name"
         android:text="TextView"
         android:textAlignment="gravity"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="32dp" />
 </RelativeLayout>

@@ -2,13 +2,14 @@ package com.bridgeinternationalacademies.pupil.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by sushantchavan on 19/04/17.
  */
 
-public class Classroom {
+public class Classroom implements Serializable {
     @SerializedName("items")
     private List<Pupil> pupil;
 

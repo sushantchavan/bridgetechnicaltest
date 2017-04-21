@@ -1,5 +1,9 @@
 package com.bridgeinternationalacademies.pupil;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Movie;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -10,20 +14,30 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.bridgeinternationalacademies.pupil.activity.PupilDetailsActivity;
 import com.bridgeinternationalacademies.pupil.adapter.PupilListAdapter;
 import com.bridgeinternationalacademies.pupil.callback.GenericCallback;
+import com.bridgeinternationalacademies.pupil.eventlisteners.recycleViewerPupilsTouchListener;
 import com.bridgeinternationalacademies.pupil.manager.PupilManager;
 import com.bridgeinternationalacademies.pupil.model.Classroom;
 import com.bridgeinternationalacademies.pupil.model.Pupil;
 import com.bridgeinternationalacademies.pupil.network.ServiceManager;
+import com.google.gson.Gson;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 public class MainActivity extends AppCompatActivity {
     private List<Pupil> listOfPupil = new ArrayList<>();
@@ -33,7 +47,14 @@ public class MainActivity extends AppCompatActivity {
     private int musterNumber = 1;
     private int countInMuster;
     private int totalMusters;
+    private ProgressBar progressBar;
 
+
+    public  interface ClickListener {
+        void onClick(View view, int position);
+
+        void onLongClick(View view, int position);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +62,14 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.VISIBLE);
+
         recyclerViewPupils = (RecyclerView) findViewById(R.id.recyclerViewPupils);
+        recyclerViewPupils.addItemDecoration(
+                new HorizontalDividerItemDecoration.Builder(this)
+                        .color(Color.GRAY)
+                        .build());
 
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -79,13 +107,17 @@ public class MainActivity extends AppCompatActivity {
         mPupilManager.getListOfPupils(musterNumber, new GenericCallback<Classroom>() {
             @Override
             public void onRequestSuccess(Classroom objectToReturn) {
-                listOfPupil = objectToReturn.getPupil();
-                musterNumber = objectToReturn.getMusterNumber();
-                countInMuster = objectToReturn.getCountInMuster();
-                totalMusters = objectToReturn.getTotalMusters();
-                mPupilAdapter = new PupilListAdapter(listOfPupil, musterNumber, countInMuster, totalMusters);
-                recyclerViewPupils.setAdapter(mPupilAdapter);
-                mPupilAdapter.notifyDataSetChanged();
+                if(objectToReturn != null) {
+
+                    listOfPupil = objectToReturn.getPupil();
+                    musterNumber = objectToReturn.getMusterNumber();
+                    countInMuster = objectToReturn.getCountInMuster();
+                    totalMusters = objectToReturn.getTotalMusters();
+                    mPupilAdapter = new PupilListAdapter(recyclerViewPupils.getContext(), listOfPupil, musterNumber, countInMuster, totalMusters);
+                    recyclerViewPupils.setAdapter(mPupilAdapter);
+                    mPupilAdapter.notifyDataSetChanged();
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
             }
 
             @Override
@@ -99,7 +131,8 @@ public class MainActivity extends AppCompatActivity {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if(musterNumber != totalMusters) {
-                    musterNumber = mPupilAdapter.getMusterNumber() + 1;
+                    musterNumber = mPupilAdapter.getMusterNumber();
+                    totalMusters = mPupilAdapter.getTotalMusters();
                     mPupilManager.getListOfPupils(musterNumber, new GenericCallback<Classroom>() {
                         @Override
                         public void onRequestSuccess(Classroom objectToReturn) {
@@ -118,12 +151,29 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onRequestFailure(Throwable error, String errorMessage) {
-
+                            Toast.makeText(MainActivity.this, R.string.internet_error, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
             }
         });
+
+
+
+        recyclerViewPupils.addOnItemTouchListener(new recycleViewerPupilsTouchListener(getApplicationContext(), recyclerViewPupils, new MainActivity.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Pupil nextPupil = listOfPupil.get(position);
+                Intent intent = new Intent(MainActivity.this, PupilDetailsActivity.class);
+                intent.putExtra("pupil", nextPupil);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
 
     }
 

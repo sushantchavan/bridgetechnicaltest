@@ -1,6 +1,7 @@
 package com.bridgeinternationalacademies.pupil.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -9,25 +10,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bridgeinternationalacademies.pupil.MainActivity;
 import com.bridgeinternationalacademies.pupil.R;
 import com.bridgeinternationalacademies.pupil.model.Pupil;
+import com.bumptech.glide.Glide;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by sushantchavan on 17/04/17.
  */
 
 public class PupilListAdapter extends RecyclerView.Adapter<PupilListAdapter.MyViewHolder>  {
-
+    private Context context;
     private List<Pupil> listOfPupil;
     private int musterNumber;
     private int countInMuster;
     private int totalMusters;
+
 
     public int getMusterNumber() {
         return musterNumber;
@@ -56,14 +60,19 @@ public class PupilListAdapter extends RecyclerView.Adapter<PupilListAdapter.MyVi
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView name;
         public TextView country;
+        public CircularImageView profileImage;
+
         public MyViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.txt_view_name);
             country = (TextView) itemView.findViewById(R.id.txt_view_country);
+            profileImage = (CircularImageView) itemView.findViewById(R.id.img_profile_image);
+
         }
     }
 
-    public  PupilListAdapter(List<Pupil> listOfPupil, int musterNumber, int countInMuster, int totalMusters ) {
+    public  PupilListAdapter(Context context, List<Pupil> listOfPupil, int musterNumber, int countInMuster, int totalMusters ) {
+        this.context = context;
         this.listOfPupil = listOfPupil;
         this.musterNumber = musterNumber;
         this.countInMuster = countInMuster;
@@ -78,9 +87,12 @@ public class PupilListAdapter extends RecyclerView.Adapter<PupilListAdapter.MyVi
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+
         Pupil pupil = listOfPupil.get(position);
         holder.name.setText(pupil.getName());
         holder.country.setText(pupil.getCountry());
+        Glide.with(context).load(pupil.getImage()).into(holder.profileImage);
+
     }
 
     /**

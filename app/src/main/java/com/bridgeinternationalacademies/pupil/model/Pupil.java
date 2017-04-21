@@ -2,11 +2,14 @@ package com.bridgeinternationalacademies.pupil.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by sushantchavan on 13/04/17.
  */
 
-public class Pupil {
+
+public class Pupil implements Serializable {
     //class attributes
     @SerializedName("pupilId")
     private String pupilId;
@@ -67,7 +70,7 @@ public class Pupil {
     }
 
 
-    public Pupil(String country, String name, String image, int latitude, int longitude) {
+    public Pupil(String country, String name, String image, float latitude, float longitude) {
         this.country = country;
         this.name = name;
         this.image = image;
