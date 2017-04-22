@@ -30,6 +30,7 @@ import com.bridgeinternationalacademies.pupil.manager.PupilManager;
 import com.bridgeinternationalacademies.pupil.model.Classroom;
 import com.bridgeinternationalacademies.pupil.model.Pupil;
 import com.bridgeinternationalacademies.pupil.network.ServiceManager;
+import com.bridgeinternationalacademies.pupil.util.NetworkHelper;
 import com.google.gson.Gson;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private int countInMuster;
     private int totalMusters;
     private ProgressBar progressBar;
+
+    NetworkHelper mNetworkHelper = new NetworkHelper(this);
 
 
     public  interface ClickListener {
@@ -87,23 +90,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*
 
-        getListOfPupils(new GenericCallback<Classroom>() {
-            @Override
-            public void onRequestSuccess(Classroom objectToReturn) {
-                listOfPupil = objectToReturn.getPupil();
-                mPupilAdapter = new PupilListAdapter(listOfPupil);
-                recyclerViewPupils.setAdapter(mPupilAdapter);
-                mPupilAdapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onRequestFailure(Throwable error, String errorMessage) {
-
-            }
-        });*/
-
+        mNetworkHelper.isNetworkAvailable();
         mPupilManager.getListOfPupils(musterNumber, new GenericCallback<Classroom>() {
             @Override
             public void onRequestSuccess(Classroom objectToReturn) {

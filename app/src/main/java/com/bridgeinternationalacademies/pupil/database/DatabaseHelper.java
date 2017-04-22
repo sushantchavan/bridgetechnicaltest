@@ -80,9 +80,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void insertPupil(Pupil pupil) {
+    public boolean insertPupil(Pupil pupil) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("INSERT INTO Pupils (PupilId, Name, Country, Image, Latitude, Longitude) VALUES (?,?,?,?,?,?)",
                 new String[] {pupil.getName(),pupil.getCountry(),pupil.getImage(),String.valueOf(pupil.getLatitude()), String.valueOf(pupil.getLongitude())});
+       if(cursor != null) {
+           return true;
+       } else {
+           return false;
+       }
     }
 }
