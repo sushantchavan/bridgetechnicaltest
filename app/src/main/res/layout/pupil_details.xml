@@ -2,42 +2,62 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/pd_img_profile_image"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/image"
+        app:civ_border_color="@android:color/darker_gray"
+        app:civ_border_width="2dp"
+        app:civ_shadow="true"
+        app:civ_shadow_radius="10"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/pd_txt_view_longitude"
+        android:layout_marginStart="11dp" />
+
+    <EditText
+        android:id="@+id/pd_input_latitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="hint"
+        android:inputType="numberSigned"
+        android:layout_alignBottom="@+id/pd_txt_view_latitude"
+        android:layout_alignStart="@+id/pd_spinner_country"
+        android:layout_toStartOf="@+id/btn_cancel"
+        android:layout_alignEnd="@+id/pd_spinner_country" />
+
+    <EditText
+        android:id="@+id/pd_input_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="hint"
+        android:inputType="numberSigned"
+        android:layout_alignBaseline="@+id/pd_txt_view_name"
+        android:layout_alignBottom="@+id/pd_txt_view_name"
+        android:layout_alignStart="@+id/pd_img_profile_image"
+        android:layout_alignEnd="@+id/btn_cancel" />
 
     <TextView
         android:id="@+id/pd_txt_view_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/pd_txt_view_country"
+        android:layout_below="@+id/pd_img_profile_image"
+        android:layout_marginTop="24dp"
         android:text="Name"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="18sp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="21dp" />
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/pd_txt_view_name"
-        android:layout_marginStart="80dp"
-        android:layout_toEndOf="@+id/pd_txt_view_name"
-        android:id="@+id/textInputLayout">
-
-        <EditText
-            android:id="@+id/pd_input_name"
-            android:layout_width="match_parent"
-            android:layout_height="22dp"
-            android:hint="hint" />
-    </android.support.design.widget.TextInputLayout>
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/pd_txt_view_country"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_alignStart="@+id/pd_txt_view_latitude"
         android:layout_below="@+id/pd_txt_view_name"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="29dp"
         android:text="Country"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="18sp" />
@@ -46,56 +66,64 @@
         android:id="@+id/pd_spinner_country"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textInputLayout"
-        android:layout_alignTop="@+id/pd_txt_view_country" />
+        android:entries="@array/countryList"
+        android:layout_alignTop="@+id/pd_txt_view_country"
+        android:layout_alignStart="@+id/pd_input_name"
+        android:layout_toStartOf="@+id/btn_cancel"
+        android:layout_alignEnd="@+id/pd_img_profile_image" />
 
     <TextView
         android:id="@+id/pd_txt_view_latitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/pd_spinner_country"
-        android:layout_marginTop="25dp"
         android:text="Latitude"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="18sp" />
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="30dp"
         android:layout_below="@+id/pd_spinner_country"
-        android:layout_alignStart="@+id/pd_spinner_country"
-        android:id="@+id/textInputLayout2">
+        android:layout_alignStart="@+id/btn_edit_save" />
 
-        <EditText
-            android:id="@+id/pd_input_latitude"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="hint"
-            android:inputType="numberSigned" />
-    </android.support.design.widget.TextInputLayout>
+    <TextView
+        android:id="@+id/pd_txt_view_longitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Longitude"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="18sp"
+        android:layout_marginTop="23dp"
+        android:layout_below="@+id/pd_txt_view_latitude"
+        android:layout_alignStart="@+id/pd_txt_view_latitude" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:text="Button"
-        android:layout_below="@+id/textInputLayout2"
+        android:id="@+id/btn_edit_save"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="155dp" />
+        android:layout_below="@+id/pd_txt_view_longitude"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="42dp"
+        android:text="Edit" />
 
-    <ImageButton
-        android:id="@+id/pd_btn_image"
-        style="@android:style/Widget.ImageButton"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="14dp"
-        android:layout_toEndOf="@+id/pd_txt_view_latitude"
-        android:background="@color/colorPrimary"
-        android:visibility="visible"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/btn_edit_save"
+        android:layout_marginEnd="32dp"
+        android:text="Cancel"
+        android:visibility="invisible" />
+
+    <EditText
+        android:id="@+id/pd_input_longitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/pd_txt_view_longitude"
+        android:layout_alignBottom="@+id/pd_txt_view_longitude"
+        android:layout_alignStart="@+id/pd_input_latitude"
+        android:hint="hint"
+        android:inputType="numberSigned"
+        android:layout_alignEnd="@+id/pd_input_latitude" />
 
 
 </RelativeLayout>

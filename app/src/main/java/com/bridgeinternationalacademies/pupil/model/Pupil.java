@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class Pupil implements Serializable {
     //class attributes
     @SerializedName("pupilId")
-    private String pupilId;
+    private int pupilId;
     @SerializedName("country")
     private String country;
 
@@ -76,5 +76,13 @@ public class Pupil implements Serializable {
         this.image = image;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public int getPupilId() {
+        return pupilId;
+    }
+
+    public void setPupilId(int pupilId) {
+        this.pupilId = pupilId;
     }
 }

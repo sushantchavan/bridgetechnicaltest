@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.bridgeinternationalacademies.pupil.activity.PupilDetailsActivity;
 import com.bridgeinternationalacademies.pupil.adapter.PupilListAdapter;
 import com.bridgeinternationalacademies.pupil.callback.GenericCallback;
+import com.bridgeinternationalacademies.pupil.database.DatabaseHelper;
 import com.bridgeinternationalacademies.pupil.eventlisteners.recycleViewerPupilsTouchListener;
 import com.bridgeinternationalacademies.pupil.manager.PupilManager;
 import com.bridgeinternationalacademies.pupil.model.Classroom;
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerViewPupils;
     private PupilListAdapter mPupilAdapter;
     public PupilManager mPupilManager = new PupilManager();
+    private DatabaseHelper db = new DatabaseHelper(this);
+
     private int musterNumber = 1;
     private int countInMuster;
     private int totalMusters;
@@ -87,40 +90,60 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, PupilDetailsActivity.class);
+                startActivity(intent);
+
             }
         });
 
 
 
-        mNetworkHelper.isNetworkAvailable();
-        mPupilManager.getListOfPupils(musterNumber, new GenericCallback<Classroom>() {
-            @Override
-            public void onRequestSuccess(Classroom objectToReturn) {
-                if(objectToReturn != null) {
+        if(mNetworkHelper.isNetworkAvailable()) {
+            mPupilManager.getListOfPupils(musterNumber, new GenericCallback<Classroom>() {
+                @Override
+                public void onRequestSuccess(Classroom objectToReturn) {
+                    if(objectToReturn != null) {
 
-                    listOfPupil = objectToReturn.getPupil();
-                    musterNumber = objectToReturn.getMusterNumber();
-                    countInMuster = objectToReturn.getCountInMuster();
-                    totalMusters = objectToReturn.getTotalMusters();
-                    mPupilAdapter = new PupilListAdapter(recyclerViewPupils.getContext(), listOfPupil, musterNumber, countInMuster, totalMusters);
-                    recyclerViewPupils.setAdapter(mPupilAdapter);
-                    mPupilAdapter.notifyDataSetChanged();
-                    progressBar.setVisibility(View.INVISIBLE);
+                        listOfPupil = objectToReturn.getPupil();
+                        musterNumber = objectToReturn.getMusterNumber();
+                        countInMuster = objectToReturn.getCountInMuster();
+                        totalMusters = objectToReturn.getTotalMusters();
+                        mPupilAdapter = new PupilListAdapter(recyclerViewPupils.getContext(), listOfPupil, musterNumber, countInMuster, totalMusters);
+                        recyclerViewPupils.setAdapter(mPupilAdapter);
+                        mPupilAdapter.notifyDataSetChanged();
+                        progressBar.setVisibility(View.INVISIBLE);
+                        updatePupilTable(objectToReturn);
+                    }
                 }
-            }
 
-            @Override
-            public void onRequestFailure(Throwable error, String errorMessage) {
+                @Override
+                public void onRequestFailure(Throwable error, String errorMessage) {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    Toast.makeText(MainActivity.this, "Unable to connect to the internet", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(MainActivity.this, "Unable to connect to the internet, Fetching local data", Toast.LENGTH_SHORT).show();
+            List<Pupil> mListOfPupilfromdB = db.getAllPupil();
+            if(mListOfPupilfromdB != null) {
+                recyclerViewPupils.setAdapter(mPupilAdapter);
+                mPupilAdapter.notifyDataSetChanged();
+
+            } else {
+                Toast.makeText(MainActivity.this, "No local data found", Toast.LENGTH_SHORT).show();
 
             }
-        });
+            progressBar.setVisibility(View.INVISIBLE);
+
+        }
+
 
         recyclerViewPupils.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if(musterNumber != totalMusters) {
-                    musterNumber = mPupilAdapter.getMusterNumber();
+                    musterNumber = mPupilAdapter.getMusterNumber()+1;
                     totalMusters = mPupilAdapter.getTotalMusters();
                     mPupilManager.getListOfPupils(musterNumber, new GenericCallback<Classroom>() {
                         @Override
@@ -130,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                                 for (int i=0; i<objectToReturn.getPupil().size(); i++) {
                                     listOfPupil.add(objectToReturn.getPupil().get(i));
                                 }
-                                countInMuster = objectToReturn.getCountInMuster();
+                                //countInMuster = objectToReturn.getCountInMuster();
                                 musterNumber = objectToReturn.getMusterNumber();
                                 totalMusters = objectToReturn.getTotalMusters();
 
@@ -186,6 +209,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updatePupilTable(Classroom classroom) {
+
+        List<Pupil> Pupils = classroom.getPupil() ;
+        for (Pupil p: Pupils) {
+            if(db.getPupil(p.getPupilId()) == null) {
+                db.insertPupil(p);
+            }
+        }
     }
 
 }

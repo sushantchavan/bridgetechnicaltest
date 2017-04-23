@@ -1,19 +1,12 @@
 package com.bridgeinternationalacademies.pupil.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bridgeinternationalacademies.pupil.MainActivity;
 import com.bridgeinternationalacademies.pupil.R;
 import com.bridgeinternationalacademies.pupil.model.Pupil;
 import com.bumptech.glide.Glide;
@@ -66,7 +59,7 @@ public class PupilListAdapter extends RecyclerView.Adapter<PupilListAdapter.MyVi
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.txt_view_name);
             country = (TextView) itemView.findViewById(R.id.txt_view_country);
-            profileImage = (CircularImageView) itemView.findViewById(R.id.img_profile_image);
+            profileImage = (CircularImageView) itemView.findViewById(R.id.pd_img_profile_image);
 
         }
     }

@@ -11,6 +11,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.bridgeinternationalacademies.pupil.model.Pupil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "bridgetest.db";
@@ -90,4 +93,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
            return false;
        }
     }
+
+    public List<Pupil> getAllPupil() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM Pupils", null);
+        List<Pupil> listofPupil = new ArrayList<Pupil>();
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                String name = cursor.getString(cursor.getColumnIndex("Name"));
+                String country = cursor.getString(cursor.getColumnIndex("Country"));
+                String image = cursor.getString(cursor.getColumnIndex("Image"));
+                float longitude = cursor.getFloat(cursor.getColumnIndex("Longitude"));
+                float latitude = cursor.getFloat(cursor.getColumnIndex("Latitude"));
+                Pupil returnPupil = new Pupil(country, name, image, latitude, longitude);
+                listofPupil.add(returnPupil);
+            }
+        }
+        return listofPupil;
+    }
+
 }
