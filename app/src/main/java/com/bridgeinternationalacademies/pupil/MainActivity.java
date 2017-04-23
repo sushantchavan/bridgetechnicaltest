@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
@@ -119,44 +120,40 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onRequestFailure(Throwable error, String errorMessage) {
                     progressBar.setVisibility(View.INVISIBLE);
-                    Toast.makeText(MainActivity.this, "Unable to connect to the internet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.internet_error_connectivity, Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
-            Toast.makeText(MainActivity.this, "Unable to connect to the internet, Fetching local data", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, R.string.internet_error_fetch_local_data, Toast.LENGTH_SHORT).show();
             List<Pupil> mListOfPupilfromdB = db.getAllPupil();
-            if(mListOfPupilfromdB != null) {
+            if(mListOfPupilfromdB != null && mListOfPupilfromdB.size() > 0) {
                 recyclerViewPupils.setAdapter(mPupilAdapter);
                 mPupilAdapter.notifyDataSetChanged();
 
             } else {
-                Toast.makeText(MainActivity.this, "No local data found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, R.string.error_no_local_data_found, Toast.LENGTH_SHORT).show();
 
             }
             progressBar.setVisibility(View.INVISIBLE);
 
         }
 
-
-        recyclerViewPupils.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerViewPupils.addOnScrollListener(new OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if(musterNumber != totalMusters) {
-                    musterNumber = mPupilAdapter.getMusterNumber()+1;
-                    totalMusters = mPupilAdapter.getTotalMusters();
+                    musterNumber = musterNumber+1;
                     mPupilManager.getListOfPupils(musterNumber, new GenericCallback<Classroom>() {
                         @Override
                         public void onRequestSuccess(Classroom objectToReturn) {
 
                             if(objectToReturn != null) {
                                 for (int i=0; i<objectToReturn.getPupil().size(); i++) {
-                                    listOfPupil.add(objectToReturn.getPupil().get(i));
+                                    if(!checkObject(listOfPupil, objectToReturn.getPupil().get(i).getPupilId())) {
+                                        listOfPupil.add(objectToReturn.getPupil().get(i));
+                                    }
                                 }
-                                //countInMuster = objectToReturn.getCountInMuster();
-                                musterNumber = objectToReturn.getMusterNumber();
-                                totalMusters = objectToReturn.getTotalMusters();
-
                                 mPupilAdapter.notifyDataSetChanged();
                             }
                         }
@@ -169,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
 
 
         recyclerViewPupils.addOnItemTouchListener(new recycleViewerPupilsTouchListener(getApplicationContext(), recyclerViewPupils, new MainActivity.ClickListener() {
@@ -219,6 +215,16 @@ public class MainActivity extends AppCompatActivity {
                 db.insertPupil(p);
             }
         }
+    }
+
+    private boolean checkObject(List<Pupil> listOfPupil, int pupilId) {
+        boolean status = false;
+        for(Pupil p: listOfPupil) {
+            if(p.getPupilId() == pupilId) {
+                status = true;
+            }
+        }
+        return status;
     }
 
 }

@@ -66,9 +66,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Pupil getPupil(int pupilId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM Pupils WHERE PupilId= ?", new String[] {String.valueOf(pupilId)});
-        if(cursor != null) {
+        if(cursor != null & cursor.getCount() > 0) {
             cursor.moveToFirst();
-
             String name = cursor.getString(cursor.getColumnIndex("Name"));
             String country = cursor.getString(cursor.getColumnIndex("Country"));
             String image = cursor.getString(cursor.getColumnIndex("Image"));
