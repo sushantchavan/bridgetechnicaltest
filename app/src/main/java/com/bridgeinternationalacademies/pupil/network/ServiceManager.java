@@ -33,7 +33,7 @@ import retrofit2.http.Path;
  */
 
 public class ServiceManager  {
-    private static  OkHttpClient.Builder httpClient = new OkHttpClient.Builder().addInterceptor(new ServiceResponseInterceptor());
+    private static  OkHttpClient.Builder httpClient = new OkHttpClient.Builder().addInterceptor(new ServiceInterceptor());
 
     Gson gson = new GsonBuilder()
             .setLenient()
@@ -64,7 +64,7 @@ public class ServiceManager  {
 
             @Override
             public void onFailure(Call<Classroom> call, Throwable t) {
-
+                t.getMessage();
             }
         });
 

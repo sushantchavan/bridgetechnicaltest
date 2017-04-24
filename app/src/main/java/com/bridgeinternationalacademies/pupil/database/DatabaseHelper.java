@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.bridgeinternationalacademies.pupil.model.Pupil;
+import com.bridgeinternationalacademies.pupil.util.SQLQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Pupil getPupil(int pupilId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM Pupils WHERE PupilId= ?", new String[] {String.valueOf(pupilId)});
+        Cursor cursor = db.rawQuery(SQLQuery.GET_PUPIL, new String[] {String.valueOf(pupilId)});
         if(cursor != null & cursor.getCount() > 0) {
             cursor.moveToFirst();
             String name = cursor.getString(cursor.getColumnIndex("Name"));
@@ -84,18 +85,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean insertPupil(Pupil pupil) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("INSERT INTO Pupils (PupilId, Name, Country, Image, Latitude, Longitude) VALUES (?,?,?,?,?,?)",
-                new String[] {pupil.getName(),pupil.getCountry(),pupil.getImage(),String.valueOf(pupil.getLatitude()), String.valueOf(pupil.getLongitude())});
-       if(cursor != null) {
-           return true;
-       } else {
-           return false;
-       }
+
+        try {
+            db.execSQL(SQLQuery.INSERT_PUPIL,
+                    new String[]{String.valueOf(pupil.getPupilId()), pupil.getName(), pupil.getCountry(), pupil.getImage(), String.valueOf(pupil.getLatitude()), String.valueOf(pupil.getLongitude())});
+
+        }
+        catch (Exception e) {
+            throw e;
+        }
+        return true;
     }
 
     public List<Pupil> getAllPupil() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM Pupils", null);
+        Cursor cursor = db.rawQuery(SQLQuery.GET_ALL_PUPILS, null);
         List<Pupil> listofPupil = new ArrayList<Pupil>();
         if (cursor != null) {
             while (cursor.moveToNext()) {

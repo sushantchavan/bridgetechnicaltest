@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseHelper db = new DatabaseHelper(this);
 
     private int musterNumber = 1;
-    private int countInMuster;
-    private int totalMusters;
+    private int countInMuster = 0 ;
+    private int totalMusters = 0;
     private ProgressBar progressBar;
 
     NetworkHelper mNetworkHelper = new NetworkHelper(this);
@@ -112,9 +112,11 @@ public class MainActivity extends AppCompatActivity {
                         mPupilAdapter = new PupilListAdapter(recyclerViewPupils.getContext(), listOfPupil, musterNumber, countInMuster, totalMusters);
                         recyclerViewPupils.setAdapter(mPupilAdapter);
                         mPupilAdapter.notifyDataSetChanged();
-                        progressBar.setVisibility(View.INVISIBLE);
                         updatePupilTable(objectToReturn);
+                    } else {
+                        Toast.makeText(MainActivity.this, R.string.service_down_error, Toast.LENGTH_SHORT).show();
                     }
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
 
                 @Override
@@ -127,11 +129,14 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, R.string.internet_error_fetch_local_data, Toast.LENGTH_SHORT).show();
             List<Pupil> mListOfPupilfromdB = db.getAllPupil();
             if(mListOfPupilfromdB != null && mListOfPupilfromdB.size() > 0) {
+                mPupilAdapter = new PupilListAdapter(recyclerViewPupils.getContext(), mListOfPupilfromdB, musterNumber, countInMuster, totalMusters);
                 recyclerViewPupils.setAdapter(mPupilAdapter);
                 mPupilAdapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.INVISIBLE);
 
             } else {
                 Toast.makeText(MainActivity.this, R.string.error_no_local_data_found, Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.INVISIBLE);
 
             }
             progressBar.setVisibility(View.INVISIBLE);
