@@ -1,12 +1,8 @@
-package com.bridgeinternationalacademies.pupil;
+package com.bridgeinternationalacademies.pupil.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Movie;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,15 +11,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.support.v7.widget.Toolbar;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.bridgeinternationalacademies.pupil.activity.PupilDetailsActivity;
+import com.bridgeinternationalacademies.pupil.R;
 import com.bridgeinternationalacademies.pupil.adapter.PupilListAdapter;
 import com.bridgeinternationalacademies.pupil.callback.GenericCallback;
 import com.bridgeinternationalacademies.pupil.database.DatabaseHelper;
@@ -31,12 +25,9 @@ import com.bridgeinternationalacademies.pupil.eventlisteners.recycleViewerPupils
 import com.bridgeinternationalacademies.pupil.manager.PupilManager;
 import com.bridgeinternationalacademies.pupil.model.Classroom;
 import com.bridgeinternationalacademies.pupil.model.Pupil;
-import com.bridgeinternationalacademies.pupil.network.ServiceManager;
 import com.bridgeinternationalacademies.pupil.util.NetworkHelper;
-import com.google.gson.Gson;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

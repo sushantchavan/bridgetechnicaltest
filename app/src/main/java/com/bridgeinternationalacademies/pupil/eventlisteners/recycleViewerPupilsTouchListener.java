@@ -6,7 +6,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.bridgeinternationalacademies.pupil.MainActivity;
+import com.bridgeinternationalacademies.pupil.activities.MainActivity;
 
 /**
  * Created by sushantchavan on 20/04/17.

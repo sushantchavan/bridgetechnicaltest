@@ -1,4 +1,4 @@
-package com.bridgeinternationalacademies.pupil.activity;
+package com.bridgeinternationalacademies.pupil.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,14 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.bridgeinternationalacademies.pupil.R;
 import com.bridgeinternationalacademies.pupil.model.Pupil;
 import com.bumptech.glide.Glide;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
@@ -31,6 +29,8 @@ public class PupilDetailsActivity extends AppCompatActivity {
     private CircularImageView pd_img_profile_image;
     private EditText pd_input_latitude;
     private EditText pd_input_longitude;
+    private EditText pd_input_pupilId;
+
     private Button btn_edit;
     private Button btn_cancel;
     private Pupil pupil;
@@ -51,17 +51,18 @@ public class PupilDetailsActivity extends AppCompatActivity {
         pd_input_country = (Spinner) findViewById(R.id.pd_spinner_country);
         pd_input_latitude = (EditText) findViewById(R.id.pd_input_latitude);
         pd_input_longitude = (EditText) findViewById(R.id.pd_input_longitude);
+        pd_input_pupilId = (EditText) findViewById(R.id.pd_input_pupilId);
+
         btn_edit = (Button) findViewById(R.id.btn_edit_save);
         btn_cancel = (Button) findViewById(R.id.btn_cancel);
 
-        pd_input_name.setEnabled(false);
-        pd_input_latitude.setEnabled(false);
-        pd_input_longitude.setEnabled(false);
-        pd_input_country.setEnabled(false);
+        pd_input_pupilId.setEnabled(false);
+
 
         if(pupil != null) {
             setEditMode(false);
 
+            pd_input_pupilId.setText(String.valueOf(pupil.getPupilId()));
             pd_input_name.setText(pupil.getName());
 
             pd_input_latitude.setText(String.valueOf(pupil.getLatitude()));
