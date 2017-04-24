@@ -1,32 +1,23 @@
 ### Package Structure
 
-1. #### activity
-All the activity related class files are placed under this folder
-
-2. #### adapter
-Grouping all the adapter classes for listviews
-
-3. #### callback
-Manage different types of callbacks
-
-4. #### database
-Layer to create and manage the local database. All the database queries are executed here
-
-5. #### eventlisteners
-Extending event listeners 
-
-6. #### manager
-Manager class to get fetch data
-
-7. #### model
-The modesl required for the application are declared and maintained here
-
-8. #### netwwork
-The web service calls are managed from here
-
-9. #### util
-General Utility functions 
-
+#### 1. activity
+...All the activity related class files are placed under this folder
+#### 2. adapter
+...Grouping all the adapter classes for listviews
+#### 3. callback
+...Manage different types of callbacks
+#### 4. database
+...Layer to create and manage the local database. All the database queries are executed here
+#### 5. eventlisteners
+...Extending event listeners
+#### 6. manager
+...Manager class to get fetch data
+#### 7. model
+...The modesl required for the application are declared and maintained here
+#### 8. netwwork
+...The web service calls are managed from here
+#### 9. util
+...General Utility functions
 
 ### Application Flow
 
