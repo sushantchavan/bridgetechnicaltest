@@ -1,37 +1,34 @@
 ### Package Structure
 
-1. activity
-
+1. #### activity
 All the activity related class files are placed under this folder
 
-2. adapter
-
+2. #### adapter
 Grouping all the adapter classes for listviews
 
-3. callback
-
+3. #### callback
 Manage different types of callbacks
 
-4. database
+4. #### database
 Layer to create and manage the local database. All the database queries are executed here
 
-5. eventlisteners
+5. #### eventlisteners
 Extending event listeners 
 
-6. manager
+6. #### manager
 Manager class to get fetch data
 
-7. model
+7. #### model
 The modesl required for the application are declared and maintained here
 
-8. netwwork
+8. #### netwwork
 The web service calls are managed from here
 
-9. util
+9. #### util
 General Utility functions 
 
 
-###Application Flow
+### Application Flow
 
 - Check for internet connection
 - If connectivity exists fetch the list of pupils and populate the list view
@@ -41,11 +38,11 @@ General Utility functions
 	- Populate the list view with the records from the local database
 - On click of an element in the list view on the pupil details in different activity 
 
-###Assumptions
+### Assumptions
 
 - The value of totalPages in the api call /api/pupil?page=1 does not change as the value of page changes
 
-###Libraries Used
+### Libraries Used
 
 1. Retrofit  - API Calls
 2. RecyclerView - Listing the pupils data
